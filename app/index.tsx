@@ -57,7 +57,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Click clack</Text>
+      <Text>Click clack test million ready</Text>
 
         <StyledHeader>
           <MyButton count={count} onClick={HandleClick} />
