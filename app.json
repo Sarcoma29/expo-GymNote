@@ -9,14 +9,26 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "runtimeVersion": {
+        "policy": "appVersion"
+      },
+      "bundleIdentifier": "gym.apk",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "gym.apk"
+      "package": "gym.apk",
+      "runtimeVersion": "0.0.2",
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -45,6 +57,9 @@
       "eas": {
         "projectId": "7b389d70-1e30-4b35-86d9-7d3941d39b44"
       }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/7b389d70-1e30-4b35-86d9-7d3941d39b44"
     }
   }
 }

@@ -86,7 +86,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.gymhell"
+    namespace 'gym.apk'
     defaultConfig {
         applicationId 'gym.apk'
         minSdkVersion rootProject.ext.minSdkVersion
