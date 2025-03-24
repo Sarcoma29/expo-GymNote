@@ -4,13 +4,12 @@ import styled from "styled-components/native"
 
 const StyledButton = styled.TouchableOpacity`
     padding: 20px;
-    margin: 10px;
-    width: 120px;
+    width: 35%;
     height: 120px;
-    background-color:rgb(255, 123, 0)
+    background-color:rgb(204, 0, 255);
 `
 const StyledText = styled.Text`
-    color: #cccccc;
+    color:rgb(0, 0, 0);
     font-size: 15px;
 `
 

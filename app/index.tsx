@@ -6,46 +6,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 import MyButton from "@/components/myButton";
-
-const StyledHeader = styled.View`
-    padding: 10px;
-    margin: 10px;
-    display: flex;
-    flex-direction: row;
-  `
+import Footer from "@/components/Footer"
+import useAsyncStorage from "@/hooks/useAsyncStorage";
 
 export default function Index() {
 
-  const [count, setCount] = useState(0);
-
-
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        let value = await AsyncStorage.getItem('myAppCounter')
-        if (value !== null) {
-          setCount(JSON.parse(value))
-          console.log("данные получены")
-        }
-      } catch (e) {
-        console.log(" error getting counter in DATA", e)
-      }  
-    }
-    getData()
-  }, [])
-
-  useEffect(() => {
-    const storeData = async () => {
-      try {
-        await AsyncStorage.setItem('myAppCounter', JSON.stringify(count))
-        console.log("данные записаны")
-      } catch (e) {
-        console.log("error setter counter in DATA", e)
-      }
-    };
-    storeData()
-  }, [count]);
+  const [count, setCount] = useAsyncStorage("clickCounter", 0)
 
   function handleClick() {
     setCount(count + 1);
@@ -59,25 +25,23 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Click clack test million ready</Text>
-
-        <StyledHeader>
+      <Text>Hello world</Text>
+      
+        <Footer>
           <MyButton count={count} onClick={handleClick} />
           <MyButton count={count} onClick={handleClick} />
           <MyButton count={count} onClick={handleClick} />
-        </StyledHeader>
+        </Footer>
 
         <Button
           title="Проверить хранилище"
           onPress={async () => {
-            const value = await AsyncStorage.getItem('counter');
-            console.log('Текущее значение в хранилище:', value);
+            const value = await AsyncStorage.getItem('clickCounter');
+            console.log('Текущее значение в AsyncStorage:', value);
           }}
         />
 
       </View>
 
-
-      
   );
 }

@@ -28,6 +28,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="myapp"/>
         <data android:scheme="gym.apk"/>
+        <data android:scheme="exp+gymhell"/>
       </intent-filter>
     </activity>
   </application>
