@@ -1,47 +1,86 @@
-import {useState, useEffect} from "react";
-import { Text, View, Button } from "react-native";
-import styled from 'styled-components/native'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { View, Text } from 'react-native';
+import Footer from '@/components/Footer';
 
+// Type definitions
+type RootStackParamList = {
+  HomeTabs: undefined;
+  SecondScreen: undefined;
+  ThirdScreen: undefined;
+};
 
-
-import MyButton from "@/components/myButton";
-import Footer from "@/components/Footer"
-import useAsyncStorage from "@/hooks/useAsyncStorage";
-
-export default function Index() {
-
-  const [count, setCount] = useAsyncStorage("clickCounter", 0)
-
-  function handleClick() {
-    setCount(count + 1);
-  }
-
+// Screens
+function HomeScreen() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Home Screen</Text>
+      <Footer />
+    </View>
+  );
+}
+
+function SecondScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>SecondScreen Screen</Text>
+      <Footer />
+    </View>
+  );
+}
+
+function ThirdScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>ThirdScreen Screen</Text>
+      <Footer />
+    </View>
+  );
+}
+
+// Tab Navigator
+const Tab = createBottomTabNavigator();
+
+function HomeTabs() {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: { 
+          position: 'absolute',
+          bottom: 0,
+          backgroundColor: 'white'
+        }
       }}
     >
-      <Text>Hello world</Text>
-      
-        <Footer>
-          <MyButton count={count} onClick={handleClick} />
-          <MyButton count={count} onClick={handleClick} />
-          <MyButton count={count} onClick={handleClick} />
-        </Footer>
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Second" component={SecondScreen} />
+      <Tab.Screen name="Third" component={ThirdScreen} />
+    </Tab.Navigator>
+  );
+}
 
-        <Button
-          title="Проверить хранилище"
-          onPress={async () => {
-            const value = await AsyncStorage.getItem('clickCounter');
-            console.log('Текущее значение в AsyncStorage:', value);
-          }}
-        />
+// Stack Navigator
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
-      </View>
+
+export default function App() {
+  return (
+
+      <Stack.Navigator
+        initialRouteName="HomeTabs"
+        screenOptions={{ 
+          headerShown: false,
+          animation: 'slide_from_right' // Optional: adds nice transition
+        }}
+      >
+        <Stack.Screen name="HomeTabs" component={HomeTabs} />
+        <Stack.Screen name="SecondScreen" component={SecondScreen} />
+        <Stack.Screen name="ThirdScreen" component={ThirdScreen} />
+      </Stack.Navigator>
 
   );
 }
+

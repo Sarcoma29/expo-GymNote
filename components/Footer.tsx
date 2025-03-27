@@ -1,20 +1,27 @@
-import React from "react"
-import {Button, GestureResponderEvent, Text} from "react-native"
-import styled from "styled-components/native"
+import { useNavigation } from '@react-navigation/native';
+import { Button } from '@react-navigation/elements';
+import styled from 'styled-components/native';
 
-
-const Footer = styled.View`
+const StyledFooter = styled.View`
     position: absolute;
-    bottom: -20px;
-    right: 0;
+    bottom: 0;
     left: 0;
-
-    backgroud-color:rgb(255, 0, 0);
+    right: 0;
     padding: 10px;
-    margin: 10px;
-    display: flex;
     flex-direction: row;
-`
+    justify-content: space-around;
+    background-color: white;
+    `;
 
+export default function Footer() {
+    const navigation = useNavigation<any>();
 
-export default Footer
+    return (
+    <StyledFooter>
+        <Button onPress={() => navigation.navigate('HomeTabs')}>Home</Button>
+        <Button onPress={() => navigation.navigate('SecondScreen')}>Second</Button>
+        <Button onPress={() => navigation.navigate('ThirdScreen')}>Third</Button>
+    </StyledFooter>
+    );
+}
+    
