@@ -3,7 +3,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text } from 'react-native';
+
 import Footer from '@/components/Footer';
+import WeekList from '@/components/WeekList';
 
 // Type definitions
 type RootStackParamList = {
@@ -17,6 +19,7 @@ function HomeScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Home Screen</Text>
+      <WeekList />
       <Footer />
     </View>
   );
@@ -26,6 +29,7 @@ function SecondScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>SecondScreen Screen</Text>
+      <WeekList />
       <Footer />
     </View>
   );
@@ -35,7 +39,7 @@ function ThirdScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>ThirdScreen Screen</Text>
-      <Footer />
+      <WeekList />
     </View>
   );
 }
@@ -62,8 +66,10 @@ function HomeTabs() {
   );
 }
 
-// Stack Navigator
+// Stack Navigator //
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
+
 
 
 export default function App() {
