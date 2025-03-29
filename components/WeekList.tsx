@@ -1,35 +1,33 @@
-import { getBackgroundColorAsync } from 'expo-system-ui';
 import React, {useState} from 'react';
+import { useNavigation } from '@react-navigation/native';
 import {
     FlatList,
     StatusBar,
     StyleSheet,
     Text,
-    Button,
+    View,
     TouchableOpacity,
 } from 'react-native';
-import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
-import styled from 'styled-components/native'
+import {SafeAreaView} from 'react-native-safe-area-context';
+
+import useAsyncStorage from '@/hooks/useAsyncStorage';
 
 type ItemData = {
     id: string;
     title: string;
 }
 
+
+
 const DATA: ItemData[] = [
     {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
+        id: Date.now().toString(),
+        title: 'Week 1',
     },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-    },
+    
 ];
+
+
 
 type ItemProps = {
     item: ItemData;
@@ -47,16 +45,31 @@ const Item = ({item, onPress, backgroundColor, textColor}: ItemProps) => (
 
 
 const WeekList = () => {
+
+    const [AppDATA, setAppDATA] = useAsyncStorage('localStorageDATA', DATA)
     const [selectedId, setSelectedId] = useState<string>();
+    const navigation = useNavigation<any>();
+
+    const pushAndSaveData = () => {
+        const newItem = {title: "Week " + (AppDATA.length + 1), id: Date.now().toString() };
+        setAppDATA([newItem, ...AppDATA])
+    }
 
     const renderItem = ({item} : {item: ItemData}) => {
         const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
         const color = item.id === selectedId ? 'white' : 'black';
 
+
         return (
             <Item 
                 item={item}
-                onPress={() => setSelectedId(item.id)}
+                onPress={() => {
+                    navigation.navigate('WeekDetails', { 
+                        weekId: item.id, 
+                        weekTitle: item.title 
+                    });
+                    setSelectedId(item.id)
+                }}
                 backgroundColor={backgroundColor}
                 textColor={color}
             />
@@ -66,29 +79,69 @@ const WeekList = () => {
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
-                data={DATA}
+                data={AppDATA}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
                 extraData={selectedId}
             />
+            <View>
+            <TouchableOpacity style={styles.addButton} onPress={pushAndSaveData}>
+                <Text style={{color: 'red'}}>Add</Text>
+            </TouchableOpacity>
 
+            <TouchableOpacity style={styles.ConsoleButton} onPress={() =>{console.log(AppDATA)}}>
+                <Text style={{color: 'white'}}>Get Data Console</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.ResetButton} onPress={() =>{setAppDATA(DATA)}}>
+                <Text style={{color: 'white'}}>reset data</Text>
+            </TouchableOpacity>
+            </View>
+
+            
         </SafeAreaView>
+
     )
 }
 
+
+
 const styles = StyleSheet.create({
     container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+        flex: 1,
+        marginTop: StatusBar.currentHeight || 0,
     },
     item: {
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+        borderRadius: 30,
+        width: 350,
+        padding: 40,
+        marginVertical: 8,
+        marginHorizontal: 16,
     },
     title: {
-    fontSize: 32,
+        fontSize: 32,
     },
+    addButton: {
+        backgroundColor: 'yellow',
+        opacity: 1,
+        padding: 15,
+        marginBottom: 10,
+        zIndex: 100,
+    },
+    ConsoleButton: {
+        backgroundColor: 'black',
+        opacity: 1,
+        padding: 15,
+        marginBottom: 10,
+        zIndex: 100,
+    },
+    ResetButton: {
+        backgroundColor: 'red',
+        opacity: 1,
+        padding: 10,
+        marginBottom: 100,
+        zIndex: 100,
+    }
 });
 
 export default WeekList;

@@ -6,6 +6,8 @@ import { View, Text } from 'react-native';
 
 import Footer from '@/components/Footer';
 import WeekList from '@/components/WeekList';
+import WeekContainer from '@/components/WeekContainer'
+
 
 // Type definitions
 type RootStackParamList = {
@@ -21,6 +23,7 @@ function HomeScreen() {
       <Text>Home Screen</Text>
       <WeekList />
       <Footer />
+      
     </View>
   );
 }
@@ -40,6 +43,16 @@ function ThirdScreen() {
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>ThirdScreen Screen</Text>
       <WeekList />
+    </View>
+  );
+}
+
+function WeekScreenBase() {
+  return (
+
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <WeekContainer />
+      <WeekContainer />
     </View>
   );
 }
@@ -67,12 +80,14 @@ function HomeTabs() {
 }
 
 // Stack Navigator //
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator();
 
 
 
+console.log(Stack.Screen)
 
 export default function App() {
+  
   return (
 
       <Stack.Navigator
@@ -85,6 +100,11 @@ export default function App() {
         <Stack.Screen name="HomeTabs" component={HomeTabs} />
         <Stack.Screen name="SecondScreen" component={SecondScreen} />
         <Stack.Screen name="ThirdScreen" component={ThirdScreen} />
+
+        <Stack.Screen 
+          name="WeekDetails" 
+          component={WeekScreenBase} 
+        />
       </Stack.Navigator>
 
   );

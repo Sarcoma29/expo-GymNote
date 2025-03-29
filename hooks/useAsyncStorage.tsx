@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function useAsyncStorage(key: string, initialValue: number) {
-  const [value, setValue] = useState(initialValue)
+export default function useAsyncStorage<T>(key: string, initialValue: T) {
+  const [value, setValue] = useState<T>(initialValue)
+  const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
     const  getData = async () => {
@@ -14,7 +16,10 @@ export default function useAsyncStorage(key: string, initialValue: number) {
         }
       } catch (e) {
         console.log("Ошибка при получении данных", e)
+      } finally {
+        setIsLoading(false);
       }
+  
     }
     getData();
   }, [key])
@@ -29,7 +34,7 @@ export default function useAsyncStorage(key: string, initialValue: number) {
       }
     }
     storeData();
-  }, [key, value])
+  }, [value])
 
   return [value, setValue] as const;
 }

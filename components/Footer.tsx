@@ -16,6 +16,7 @@ const StyledFooter = styled.View`
 export default function Footer() {
     const navigation = useNavigation<any>();
 
+
     return (
     <StyledFooter>
         <Button onPress={() => navigation.navigate('HomeTabs')}>Home</Button>
