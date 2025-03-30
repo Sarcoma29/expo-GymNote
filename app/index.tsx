@@ -52,7 +52,6 @@ function WeekScreenBase() {
 
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <WeekContainer />
-      <WeekContainer />
     </View>
   );
 }
