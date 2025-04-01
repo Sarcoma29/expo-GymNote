@@ -83,6 +83,22 @@ const RemoveSet = styled.TouchableOpacity`
     background-color: red;
 `;
 
+const AddExercise = styled.TouchableOpacity`
+padding: 10px;
+    width: 50px;
+    background-color: green;
+`
+
+const RemoveExercise = styled.TouchableOpacity`
+    padding: 10px;
+    width: 70px;
+    background-color: red;
+    position: absolute;
+    left: 10;
+    bottom: 10;
+    border-radius: 10px;
+`
+
 
 const WeekContainer = () => {
     const route = useRoute();
@@ -127,6 +143,7 @@ const WeekContainer = () => {
         }))
     }, []);
 
+    // добавление/удаление подходов внутри упражения
     const handleAddSet = (exerciseId: string) => {
         setPageDATA(prevData => 
             prevData.map(item => {
@@ -155,7 +172,26 @@ const WeekContainer = () => {
                 return item;
             })
             );
-        };    
+        };
+
+        // добавление/удаление блоков с упражнением
+
+        const handleAddExercise = () => {
+            const newExercise = {
+                id: Date.now().toString(),
+                title: "Exercise 1",
+                sets: [[1, 20, 10], [2, 50, 10], [3, 60, 10]]
+            }
+            console.log(...PageDATA)
+            setPageDATA([...PageDATA, newExercise])
+
+        };
+
+        const handleRemoveExercise = (exerciseId: string) => {
+            setPageDATA(prevData =>
+                prevData.filter(item => item.id !== exerciseId )
+                );
+            };    
 
     const SetItem = memo(({ exerciseId, set, index }: { exerciseId: string, set: number[], index: number }) => {
         const [localWeight, setLocalWeight] = useState(String(set[1]));
@@ -173,7 +209,6 @@ const WeekContainer = () => {
                     style={{ textAlign: 'center' }}
                     onChangeText={setLocalWeight}
                     onBlur={() => handleWeightChange(exerciseId, index, localWeight)}
-
 
                 />
             </SetCell>
@@ -194,6 +229,7 @@ const WeekContainer = () => {
         const [localTitle, useLocalTitle] = useState(item.title)
         return (
         <ExerciseContainer>
+
             <ExerciseTitle 
             value = {localTitle}
             onChangeText = {useLocalTitle}
@@ -205,13 +241,13 @@ const WeekContainer = () => {
             exerciseId={item.id}
             set={set}
             index={index}
-            
             />
             ))}
     
             <AddSet onPress={() => {handleAddSet(item.id)}}><Text>+</Text></AddSet>
             <RemoveSet onPress={() => {handleRemoveSet(item.id)}}><Text>-</Text></RemoveSet>
 
+            <RemoveExercise onPress={() => {handleRemoveExercise(item.id)}}><Text>Delete</Text></RemoveExercise>
         </ExerciseContainer>
         )
     });
@@ -226,6 +262,7 @@ const WeekContainer = () => {
             contentContainerStyle={{ padding: 16 }}
         />
         <AddSet onPress={() => {console.log(PageDATA)}}><Text>check data</Text></AddSet>
+        <AddExercise onPress={(handleAddExercise)}><Text>Add new exercise</Text></AddExercise>
         </View>
         
         );
