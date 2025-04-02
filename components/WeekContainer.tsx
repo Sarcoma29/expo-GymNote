@@ -19,23 +19,7 @@ type RouteParams = {
     weekId: number | string; 
 }
 
-const DATA: ExerciseData[] = [
-    {
-        id: '1',
-        title: "жим лежа",
-        sets: [[1, 50, 20], [2, 60, 15], [3, 70, 12], [4, 80, 8], [5, 100, 5], [6, 120, 78 ]]
-    },
-    {
-        id: '2',
-        title: "бабочка",
-        sets: [[1,70, 20], [2,70, 15], [3,70, 12], [4,70, 8]]
-    },
-    {
-        id: '3',
-        title: "Подъём на бицепс",
-        sets: [[1, 50, 20], [2, 50, 15], [3, 50, 12], [4, 50, 8]]
-    }
-]
+const DATA: ExerciseData[] = []
 
 
 // Стилизованные компоненты
@@ -106,6 +90,8 @@ const WeekContainer = () => {
     const [PageDATA, setPageDATA] = useAsyncStorage(params.weekId.toString(), DATA) 
 
     const [selectedId, setSelectedId] = useState<string>();
+
+    console.log(route.params)
 
     // обработчик изменения название title
     const handleTitleSet = useCallback((exerciseId: string, newTitle: string ) => {

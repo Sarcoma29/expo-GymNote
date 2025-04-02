@@ -10,7 +10,7 @@ const StyledFooter = styled.View`
     padding: 10px;
     flex-direction: row;
     justify-content: space-around;
-    background-color: white;
+    background-color: red;
     `;
 
 export default function Footer() {

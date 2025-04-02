@@ -7,6 +7,7 @@ import {
     Text,
     View,
     TouchableOpacity,
+    Image,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
@@ -17,15 +18,12 @@ type ItemData = {
     title: string;
 }
 
+type WeekListProps = {
+    storageKey: string;
+}
 
 
-const DATA: ItemData[] = [
-    {
-        id: Date.now().toString(),
-        title: 'Week 1',
-    },
-    
-];
+const DATA: ItemData[] = [];
 
 
 
@@ -44,20 +42,61 @@ const Item = ({item, onPress, backgroundColor, textColor}: ItemProps) => (
 
 
 
-const WeekList = () => {
+const WeekList = ({ storageKey }: WeekListProps) => {
 
-    const [AppDATA, setAppDATA] = useAsyncStorage('localStorageDATA', DATA)
+    const [AppDATA, setAppDATA] = useAsyncStorage(storageKey, DATA)
     const [selectedId, setSelectedId] = useState<string>();
     const navigation = useNavigation<any>();
 
     const pushAndSaveData = () => {
-        const newItem = {title: "Week " + (AppDATA.length + 1), id: Date.now().toString() };
+        const newItem = {
+            title: "Week " + (AppDATA.length + 1),
+            id: `${storageKey}_${Date.now()}`
+            };
         setAppDATA([newItem, ...AppDATA])
     }
 
+    const RemoveLastweekHandler = () => {
+        let newData = AppDATA.slice(1)
+        setAppDATA(newData)
+    }
+
+    const RemoveLastweek = () => {
+        return (
+            <TouchableOpacity style={styles.RemoveWeek} onPress={() =>{RemoveLastweekHandler()}}>
+                <Image 
+                source={require('../assets/images/deleteExercise.png')}
+                style={styles.imgBtn}
+                />
+            </TouchableOpacity>
+        )
+    }
+
+    // log functions -------------
+
+        const Reset = () => {
+            return (
+                <TouchableOpacity style={styles.ResetButton} onPress={() =>{setAppDATA(DATA)}}>
+                    <Text style={{color: 'white'}}>reset data</Text>
+                </TouchableOpacity>
+            )
+        }
+
+        const LogData = () => {
+            return (
+                <TouchableOpacity style={styles.ConsoleButton} onPress={() =>{console.log(AppDATA)}}>
+                    <Text style={{color: 'white'}}>Get Data Console</Text>
+                </TouchableOpacity>
+            )
+}
+
+    //--------------------------------
+
+
+
     const renderItem = ({item} : {item: ItemData}) => {
-        const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
-        const color = item.id === selectedId ? 'white' : 'black';
+        const backgroundColor = item.id === selectedId ? '#125fdb' : '#125fdb';
+        const color = item.id === selectedId ? 'black' : 'white';
 
 
         return (
@@ -84,20 +123,14 @@ const WeekList = () => {
                 keyExtractor={item => item.id}
                 extraData={selectedId}
             />
-            <View>
+            <RemoveLastweek></RemoveLastweek>
+            <View style = {styles.item}>
+
             <TouchableOpacity style={styles.addButton} onPress={pushAndSaveData}>
                 <Text style={{color: 'red'}}>Add</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.ConsoleButton} onPress={() =>{console.log(AppDATA)}}>
-                <Text style={{color: 'white'}}>Get Data Console</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.ResetButton} onPress={() =>{setAppDATA(DATA)}}>
-                <Text style={{color: 'white'}}>reset data</Text>
-            </TouchableOpacity>
             </View>
-
             
         </SafeAreaView>
 
@@ -141,7 +174,19 @@ const styles = StyleSheet.create({
         padding: 10,
         marginBottom: 100,
         zIndex: 100,
+    },
+    RemoveWeek: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        padding: 10,
+        backgroundColor: 'red',
+    },
+    imgBtn: {
+        width: 40,
+        height: 40,
     }
+
 });
 
 export default WeekList;
