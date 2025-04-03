@@ -28,19 +28,20 @@ const ExerciseContainer = styled.View`
     width: 320px;
     padding: 10px;
     margin: 10px;
-    background-color:rgba(0, 0, 0, 0.29);
+    background-color:rgba(255, 255, 255, 0.78);
     border-radius: 20px;
-    border: 1px solid rgba(0, 0, 0, 0);
+    border: 1px solid rgb(0, 0, 0);
 `;
 
 const SetRow = styled.View`
-    color:rgb(255, 255, 255);
+    color:rgba(0, 0, 0, 0.99);
     flex-direction: row;
     width: 100%;
     padding: 10px;
-    background-color: rgb(0, 62, 119);
+    background-color:rgb(18, 95, 219);
     margin-bottom: 5px;
     border-radius: 8px;
+    border: 1px solid rgb(0, 0, 0);
 `;
 
 const ExerciseTitle = styled.TextInput`
@@ -58,13 +59,19 @@ const SetCell = styled.View`
 `;
 
 const AddSet = styled.TouchableOpacity`
-    padding: 20px;
+    width: 55px;
+    height: 40px;
     background-color: green;
+    border-radius: 0px 12px 12px 0px;
+
 `;
 
 const RemoveSet = styled.TouchableOpacity`
-    padding: 20px;
+    width: 55px;
+    height: 40px;
     background-color: red;
+    border-radius: 12px 0px 0px 12px;
+
 `;
 
 const AddExercise = styled.TouchableOpacity`
@@ -78,10 +85,54 @@ const RemoveExercise = styled.TouchableOpacity`
     width: 70px;
     background-color: red;
     position: absolute;
-    left: 10;
-    bottom: 10;
+    left: 10px;
+    bottom: 10px;
     border-radius: 10px;
+    border: 1px solid rgb(0, 0, 0);
 `
+const StyledExerciseHeader = styled.View`
+margin-left: 20px;
+display: flex;
+flew-wrap: nowrap;
+flex-direction: row;
+
+`
+
+const StyledExerciseHeaderText = styled.Text`
+padding: 5px 30px;
+font-size: 10px;
+`
+
+
+const StyledButtonsInner = styled.View`
+position: absolute;
+right: 10px;
+bottom: 10px;
+`
+
+const StyledButtons = styled.View`
+width: 111.9px;
+z-index: 10;
+display: flex;
+flex-direction: row;
+border-radius: 12.4px;
+border: 1px solid rgb(0, 0, 0);
+`
+const StyledPlus = styled.Text`
+color: black;
+font-size: 32px;
+position: absolute;
+top: -4px;
+right: 20px;
+`;
+
+const StyledMinus = styled.Text`
+color: black;
+font-size: 32px;
+position: absolute;
+top: -4px;
+right: 20px;
+`;
 
 
 const WeekContainer = () => {
@@ -210,17 +261,28 @@ const WeekContainer = () => {
         </SetRow>
         )
     });
+
+    const ExerciseHeader = () => {
+        return (
+            <StyledExerciseHeader>
+                <StyledExerciseHeaderText>№</StyledExerciseHeaderText>
+                <StyledExerciseHeaderText>Вес</StyledExerciseHeaderText>
+                <StyledExerciseHeaderText>Повторы</StyledExerciseHeaderText>
+            </StyledExerciseHeader>
+        )
+        
+    }
     
     const ExerciseItem = memo(({ item }: { item: ExerciseData }) => {
         const [localTitle, useLocalTitle] = useState(item.title)
         return (
-        <ExerciseContainer>
-
+        <ExerciseContainer style = {{paddingBottom: 60}}>
             <ExerciseTitle 
             value = {localTitle}
             onChangeText = {useLocalTitle}
             onBlur = {() => {handleTitleSet(item.id, localTitle)}}
             />
+            <ExerciseHeader></ExerciseHeader>
             {item.sets.map((set, index) => (
             <SetItem 
             key={`set-${index}`}
@@ -229,9 +291,14 @@ const WeekContainer = () => {
             index={index}
             />
             ))}
-    
-            <AddSet onPress={() => {handleAddSet(item.id)}}><Text>+</Text></AddSet>
-            <RemoveSet onPress={() => {handleRemoveSet(item.id)}}><Text>-</Text></RemoveSet>
+
+            <StyledButtonsInner>
+                <StyledButtons>
+                    <RemoveSet onPress={() => {handleRemoveSet(item.id)}}><StyledMinus>-</StyledMinus></RemoveSet>
+                    <AddSet onPress={() => {handleAddSet(item.id)}}><StyledPlus>+</StyledPlus></AddSet>
+                </StyledButtons>
+            </StyledButtonsInner>
+                
 
             <RemoveExercise onPress={() => {handleRemoveExercise(item.id)}}><Text>Delete</Text></RemoveExercise>
         </ExerciseContainer>
@@ -246,7 +313,7 @@ const WeekContainer = () => {
             keyExtractor={item => item.id}
             extraData={PageDATA}
             contentContainerStyle={{ padding: 16 }}
-        />
+            />
         <AddSet onPress={() => {console.log(PageDATA)}}><Text>check data</Text></AddSet>
         <AddExercise onPress={(handleAddExercise)}><Text>Add new exercise</Text></AddExercise>
         </View>

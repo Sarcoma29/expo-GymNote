@@ -12,6 +12,8 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import useAsyncStorage from '@/hooks/useAsyncStorage';
+import { red } from 'react-native-reanimated/lib/typescript/Colors';
+import { BottomTabBar } from '@react-navigation/bottom-tabs';
 
 type ItemData = {
     id: string;
@@ -61,14 +63,24 @@ const WeekList = ({ storageKey }: WeekListProps) => {
         setAppDATA(newData)
     }
 
-    const RemoveLastweek = () => {
+    const RemoveLastweekButton = () => {
         return (
             <TouchableOpacity style={styles.RemoveWeek} onPress={() =>{RemoveLastweekHandler()}}>
+                <View style = {styles.topLine}></View>
                 <Image 
                 source={require('../assets/images/deleteExercise.png')}
                 style={styles.imgBtn}
                 />
             </TouchableOpacity>
+        )
+    }
+
+    const AddWeekButton = () => {
+        return (
+                <TouchableOpacity style={styles.AddWeekButton} onPress={pushAndSaveData}>
+                    <Text style={{ fontSize: 32 }}>ADD WEEK</Text>
+                    <View style = {styles.bottomLine}></View>
+                </TouchableOpacity>
         )
     }
 
@@ -95,8 +107,8 @@ const WeekList = ({ storageKey }: WeekListProps) => {
 
 
     const renderItem = ({item} : {item: ItemData}) => {
-        const backgroundColor = item.id === selectedId ? '#125fdb' : '#125fdb';
-        const color = item.id === selectedId ? 'black' : 'white';
+        const backgroundColor = item.id === selectedId ? ' #125fdb' : ' #125fdb';
+        const color = item.id === selectedId ? 'black' : ' white';
 
 
         return (
@@ -122,15 +134,12 @@ const WeekList = ({ storageKey }: WeekListProps) => {
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
                 extraData={selectedId}
-            />
-            <RemoveLastweek></RemoveLastweek>
-            <View style = {styles.item}>
 
-            <TouchableOpacity style={styles.addButton} onPress={pushAndSaveData}>
-                <Text style={{color: 'red'}}>Add</Text>
-            </TouchableOpacity>
-
-            </View>
+                ListHeaderComponent = {AddWeekButton}
+                
+                ListFooterComponent={RemoveLastweekButton}
+            >
+            </FlatList>
             
         </SafeAreaView>
 
@@ -155,9 +164,10 @@ const styles = StyleSheet.create({
         fontSize: 32,
     },
     addButton: {
-        backgroundColor: 'yellow',
+        alignItems: 'center',
+        alignContent: 'center',
         opacity: 1,
-        padding: 15,
+        padding: 10,
         marginBottom: 10,
         zIndex: 100,
     },
@@ -176,15 +186,40 @@ const styles = StyleSheet.create({
         zIndex: 100,
     },
     RemoveWeek: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        padding: 10,
-        backgroundColor: 'red',
+        borderRadius: 30,
+        width: 350,
+        padding: 40,
+        marginVertical: 8,
+        marginHorizontal: 16,
+        backgroundColor: '#125fdb',
     },
     imgBtn: {
         width: 40,
         height: 40,
+    },
+    AddWeekButton: {
+        borderRadius: 30,
+        width: 350,
+        padding: 40,
+        marginVertical: 8,
+        marginHorizontal: 16,
+        backgroundColor: '#125fdb',
+    },
+    bottomLine: {
+        width: 400,
+        height: 4,
+        backgroundColor: 'black',
+        position: 'absolute',
+        left: -15,
+        bottom: -10,
+    },
+    topLine: {
+        width: 400,
+        height: 4,
+        backgroundColor: 'black',
+        position: 'absolute',
+        left: -15,
+        top: -10,
     }
 
 });
