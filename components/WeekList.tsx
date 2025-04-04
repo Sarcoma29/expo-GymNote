@@ -71,6 +71,7 @@ const WeekList = ({ storageKey }: WeekListProps) => {
                 source={require('../assets/images/deleteExercise.png')}
                 style={styles.imgBtn}
                 />
+                <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold', marginLeft: 32}}>Reset last week</Text>
             </TouchableOpacity>
         )
     }
@@ -78,7 +79,7 @@ const WeekList = ({ storageKey }: WeekListProps) => {
     const AddWeekButton = () => {
         return (
                 <TouchableOpacity style={styles.AddWeekButton} onPress={pushAndSaveData}>
-                    <Text style={{ fontSize: 32 }}>ADD WEEK</Text>
+                    <Text style={{ fontSize: 32, color: 'white'}}>ADD WEEK</Text>
                     <View style = {styles.bottomLine}></View>
                 </TouchableOpacity>
         )
@@ -107,12 +108,12 @@ const WeekList = ({ storageKey }: WeekListProps) => {
 
 
     const renderItem = ({item} : {item: ItemData}) => {
-        const backgroundColor = item.id === selectedId ? ' #125fdb' : ' #125fdb';
-        const color = item.id === selectedId ? 'black' : ' white';
+        const backgroundColor = item.id === selectedId ? '#125fdb' : '#125fdb';
+        const color = item.id === selectedId ? 'white' : 'white';
 
 
         return (
-            <Item 
+            <Item
                 item={item}
                 onPress={() => {
                     navigation.navigate('WeekDetails', { 
@@ -136,7 +137,6 @@ const WeekList = ({ storageKey }: WeekListProps) => {
                 extraData={selectedId}
 
                 ListHeaderComponent = {AddWeekButton}
-                
                 ListFooterComponent={RemoveLastweekButton}
             >
             </FlatList>
@@ -151,7 +151,8 @@ const WeekList = ({ storageKey }: WeekListProps) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: StatusBar.currentHeight || 0,
+        alignItems: 'center',
+        marginTop: StatusBar.currentHeight || 0, 
     },
     item: {
         borderRadius: 30,
@@ -159,9 +160,12 @@ const styles = StyleSheet.create({
         padding: 40,
         marginVertical: 8,
         marginHorizontal: 16,
+        alignItems: 'center',
     },
     title: {
+        alignItems: 'center',
         fontSize: 32,
+
     },
     addButton: {
         alignItems: 'center',
@@ -186,16 +190,20 @@ const styles = StyleSheet.create({
         zIndex: 100,
     },
     RemoveWeek: {
+        display: 'flex',
+        flexDirection: 'row',
         borderRadius: 30,
         width: 350,
         padding: 40,
         marginVertical: 8,
         marginHorizontal: 16,
         backgroundColor: '#125fdb',
+        alignItems: 'center'
     },
     imgBtn: {
         width: 40,
         height: 40,
+        tintColor: "white"
     },
     AddWeekButton: {
         borderRadius: 30,
@@ -204,6 +212,7 @@ const styles = StyleSheet.create({
         marginVertical: 8,
         marginHorizontal: 16,
         backgroundColor: '#125fdb',
+        alignItems: 'center'
     },
     bottomLine: {
         width: 400,
@@ -214,7 +223,7 @@ const styles = StyleSheet.create({
         bottom: -10,
     },
     topLine: {
-        width: 400,
+        width: 420,
         height: 4,
         backgroundColor: 'black',
         position: 'absolute',

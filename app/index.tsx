@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, StatusBar , Text } from 'react-native';
@@ -32,10 +32,13 @@ function WeekScreenBase() {
 }
 
 // Stack Navigator //
+
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 function MainTabs() {
+
   return (
       <Tab.Navigator
       screenOptions={{
@@ -65,7 +68,7 @@ function TabContent({ storageKey }: {storageKey:string}) {
 }
 
 export default function App() {
-  
+  const route = useRoute();
   return (
     <>
       <StatusBar
@@ -83,7 +86,7 @@ export default function App() {
           }}
           
         />
-        <Stack.Screen  name="WeekDetails" component={WeekScreenBase}  />
+        <Stack.Screen  name="WeekDetails" component={WeekScreenBase} /> 
       </Stack.Navigator>
     </>
       
