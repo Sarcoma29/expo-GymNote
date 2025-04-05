@@ -49,11 +49,12 @@ const WeekList = ({ storageKey }: WeekListProps) => {
     const [AppDATA, setAppDATA] = useAsyncStorage(storageKey, DATA)
     const [selectedId, setSelectedId] = useState<string>();
     const navigation = useNavigation<any>();
-
+    
     const pushAndSaveData = () => {
         const newItem = {
             title: "Week " + (AppDATA.length + 1),
-            id: `${storageKey}_${Date.now()}`
+            id: `${storageKey}_${Date.now()}`,
+            storageKey: storageKey.toString()
             };
         setAppDATA([newItem, ...AppDATA])
     }
@@ -71,7 +72,7 @@ const WeekList = ({ storageKey }: WeekListProps) => {
                 source={require('../assets/images/deleteExercise.png')}
                 style={styles.imgBtn}
                 />
-                <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold', marginLeft: 32}}>Reset last week</Text>
+                <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold', marginLeft: 32 }}>Reset last week</Text>
             </TouchableOpacity>
         )
     }
@@ -85,28 +86,6 @@ const WeekList = ({ storageKey }: WeekListProps) => {
         )
     }
 
-    // log functions -------------
-
-        const Reset = () => {
-            return (
-                <TouchableOpacity style={styles.ResetButton} onPress={() =>{setAppDATA(DATA)}}>
-                    <Text style={{color: 'white'}}>reset data</Text>
-                </TouchableOpacity>
-            )
-        }
-
-        const LogData = () => {
-            return (
-                <TouchableOpacity style={styles.ConsoleButton} onPress={() =>{console.log(AppDATA)}}>
-                    <Text style={{color: 'white'}}>Get Data Console</Text>
-                </TouchableOpacity>
-            )
-}
-
-    //--------------------------------
-
-
-
     const renderItem = ({item} : {item: ItemData}) => {
         const backgroundColor = item.id === selectedId ? '#125fdb' : '#125fdb';
         const color = item.id === selectedId ? 'white' : 'white';
@@ -116,9 +95,10 @@ const WeekList = ({ storageKey }: WeekListProps) => {
             <Item
                 item={item}
                 onPress={() => {
-                    navigation.navigate('WeekDetails', { 
+                    navigation.navigate('WeekDetails', {
                         weekId: item.id, 
-                        weekTitle: item.title 
+                        weekTitle: item.title,
+                        storageKey: storageKey,
                     });
                     setSelectedId(item.id)
                 }}
@@ -131,6 +111,7 @@ const WeekList = ({ storageKey }: WeekListProps) => {
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
+                style={{paddingTop: 0, marginTop: 0}}
                 data={AppDATA}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
@@ -152,7 +133,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        marginTop: StatusBar.currentHeight || 0, 
+        paddingTop: 0,
+        marginTop: 0, 
     },
     item: {
         borderRadius: 30,

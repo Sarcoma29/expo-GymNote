@@ -1,5 +1,5 @@
-import { View, Text, TextInput, FlatList, TouchableOpacity } from 'react-native';
-import React, { useState, useCallback, memo } from 'react';
+import { View, Text, TextInput, FlatList } from 'react-native';
+import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components/native'
 import { useRoute } from '@react-navigation/native';
 
@@ -19,6 +19,7 @@ type ExerciseData = {
 type RouteParams = {
     weekId: number | string; 
     weekTitle: string;
+    storageKey: string;
 }
 
 const DATA: ExerciseData[] = []
@@ -146,13 +147,17 @@ const WeekContainer = () => {
     const route = useRoute();
     const params = route.params as RouteParams;
     const navigation = useNavigation();
-    navigation.setOptions({ title: params.weekTitle })
-
-    const [PageDATA, setPageDATA] = useAsyncStorage(params.weekId.toString(), DATA) 
-
     const [selectedId, setSelectedId] = useState<string>();
 
-    console.log(route.params)
+    //устнавливаю название станицы сверхну
+    navigation.setOptions({ title: params.weekTitle })
+    
+    //основные данные
+    const [PageDATA, setPageDATA] = useAsyncStorage(params.weekId.toString(), DATA) 
+
+    // ----------  добавление данных последней страницы ---------- //
+    const [isInitialized, setIsInitialized] = useState(false);
+    const [pagesList, setPagesList] = useAsyncStorage(`${params.storageKey}_workout_pages`, []);
 
     // обработчик изменения название title
     const handleTitleSet = useCallback((exerciseId: string, newTitle: string ) => {
@@ -248,7 +253,7 @@ const WeekContainer = () => {
         )
     }
 
-    const SetItem = memo(({ exerciseId, set, index }: { exerciseId: string, set: number[], index: number }) => {
+    const SetItem = ({ exerciseId, set, index }: { exerciseId: string, set: number[], index: number }) => {
         const [localWeight, setLocalWeight] = useState(String(set[1]));
         const [localReps, setLocalReps] = useState(String(set[2]));
 
@@ -279,7 +284,7 @@ const WeekContainer = () => {
             </SetCell>
         </SetRow>
         )
-    });
+    };
 
     const ExerciseHeader = () => {
         return (
@@ -292,7 +297,7 @@ const WeekContainer = () => {
         
     }
     
-    const ExerciseItem = memo(({ item }: { item: ExerciseData }) => {
+    const ExerciseItem = ({ item }: { item: ExerciseData }) => {
         const [localTitle, useLocalTitle] = useState(item.title)
         return (
         <ExerciseContainer style = {{paddingBottom: 60}}>
@@ -322,7 +327,7 @@ const WeekContainer = () => {
             <RemoveExercise onPress={() => {handleRemoveExercise(item.id)}}><Text style={{color: 'white', fontWeight: 'bold' }}>Delete</Text></RemoveExercise>
         </ExerciseContainer>
         )
-    });
+    };
 
     return (
         <View>
